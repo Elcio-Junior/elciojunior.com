@@ -48,7 +48,17 @@ a { color: var(--blue); }
 }
 .code-bg {
   position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
-  font: 12px/1.7 var(--mono); color: var(--code); white-space: pre; padding: 90px 24px;
+  font: 12px/1.7 var(--mono); color: var(--code); white-space: pre;
+  display: flex; gap: 48px; padding: 0 24px;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+}
+.code-col { flex: none; will-change: transform; animation: code-up var(--dur, 60s) linear infinite; }
+.code-col.down { animation-name: code-down; }
+@keyframes code-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+@keyframes code-down { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .code-col { animation: none; }
 }
 
 .diamond {

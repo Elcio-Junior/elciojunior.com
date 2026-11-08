@@ -61,12 +61,38 @@
     try { localStorage.setItem('theme', t); } catch (e) {}
   });
 
-  // Fundo com toque de código
-  var snippet = [
-    'const elcio = {', '  role: "developer",', '  loves: ["code", "ideas"],', '  build() { return "something great"; }', '};',
-    '', 'async function hello() {', '  await coffee();', '  return ship(elcio.build());', '}', '', 'git commit -m "feat: be awesome"'
-  ].join('\n');
-  document.getElementById('codeBg').textContent = snippet + '\n\n' + snippet + '\n\n' + snippet;
+  // Fundo com código em movimento: colunas que rolam em loop contínuo
+  var snippets = [
+    ['const elcio = {', '  role: "developer",', '  loves: ["code", "ideas"],', '  build() { return "something great"; }', '};'],
+    ['async function hello() {', '  await coffee();', '  return ship(elcio.build());', '}'],
+    ['git commit -m "feat: be awesome"', 'git push origin main'],
+    ['public async Task<IActionResult> Get()', '{', '    var data = await _mediator.Send(new Query());', '    return Ok(data);', '}'],
+    ['@Component({ standalone: true })', 'export class AppComponent {', '  count = signal(0);', '  inc() { this.count.update(n => n + 1); }', '}'],
+    ['SELECT name, role', 'FROM developers', 'WHERE passion = \'code\'', 'ORDER BY impact DESC;'],
+    ['while (alive) {', '  learn();', '  build();', '  share();', '}']
+  ];
+  var codeBg = document.getElementById('codeBg');
+
+  function buildCodeBg() {
+    codeBg.innerHTML = '';
+    var cols = Math.max(2, Math.ceil(window.innerWidth / 340));
+    for (var c = 0; c < cols; c++) {
+      var block = [];
+      for (var k = 0; k < snippets.length; k++) block.push(snippets[(c * 3 + k) % snippets.length].join('\n'));
+      var half = block.join('\n\n') + '\n\n';
+      half += half; // garante altura maior que telas altas
+      var col = el('div', 'code-col' + (c % 2 ? ' down' : ''), half + half); // duas metades iguais: loop sem emenda
+      col.style.setProperty('--dur', (50 + (c * 17) % 40) + 's');
+      col.style.animationDelay = -(c * 7) + 's';
+      codeBg.appendChild(col);
+    }
+  }
+  buildCodeBg();
+  var lastW = window.innerWidth, rt;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { if (window.innerWidth !== lastW) { lastW = window.innerWidth; buildCodeBg(); } }, 200);
+  });
 
   document.getElementById('year').textContent = new Date().getFullYear();
   render();

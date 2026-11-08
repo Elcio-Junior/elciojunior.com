@@ -15,14 +15,14 @@ window.SITE = {
     { pt: "Testes", en: "Testing", items: ["Jest", "Jasmine/Karma", "xUnit", "MSTest", "SpecFlow/BDD"] }
   ],
   pt: {
-    "meta.description": "Elcio Junior, engenheiro de software full-stack com .NET, Angular e IA aplicada.",
-    "avatar.alt": "Ilustração de Elcio Junior",
+    "meta.description": "Elcio Júnior, engenheiro de software full-stack com .NET, Angular e IA aplicada.",
+    "avatar.alt": "Ilustração de Elcio Júnior",
     "nav.about": "Sobre", "nav.stack": "Stack", "nav.experience": "Experiência", "nav.contact": "Contato",
     "hero.eyebrow": "Olá, eu sou",
-    "hero.name": "Elcio Junior",
+    "hero.name": "Elcio Júnior",
     "hero.role": "Engenheiro de Software Full-Stack | .NET • Angular • IA aplicada",
     "hero.summary": "Engenheiro full-stack com mais de 10 anos de experiência em C#/.NET e Angular, em projetos para empresas como Dell, ENEL, PNUD e operadoras de telecom no Oriente Médio e na Ásia. Hoje combino desenvolvimento web com integração de IA (LLMs) em produtos reais. Moro em Portugal e trabalho remotamente.",
-    "hero.location": "Viseu, Portugal · disponível para trabalho remoto",
+    "hero.location": "Viseu, Portugal",
     "hero.cta1": "Fale comigo", "hero.cta2": "Ver experiência",
     "about.title": "Sobre mim",
     "about.body": [
@@ -55,14 +55,14 @@ window.SITE = {
     "contact.text": "Vamos conversar? Me encontre nos canais abaixo."
   },
   en: {
-    "meta.description": "Elcio Junior, full-stack software engineer working with .NET, Angular and applied AI.",
-    "avatar.alt": "Illustration of Elcio Junior",
+    "meta.description": "Elcio Júnior, full-stack software engineer working with .NET, Angular and applied AI.",
+    "avatar.alt": "Illustration of Elcio Júnior",
     "nav.about": "About", "nav.stack": "Stack", "nav.experience": "Experience", "nav.contact": "Contact",
     "hero.eyebrow": "Hi, I'm",
-    "hero.name": "Elcio Junior",
+    "hero.name": "Elcio Júnior",
     "hero.role": "Full-Stack Software Engineer | .NET • Angular • Applied AI",
     "hero.summary": "Full-stack engineer with over 10 years of experience in C#/.NET and Angular, on projects for companies such as Dell, ENEL, UNDP and telecom operators in the Middle East and Asia. Today I combine web development with AI (LLM) integration in real products. I live in Portugal and work remotely.",
-    "hero.location": "Viseu, Portugal · available for remote work",
+    "hero.location": "Viseu, Portugal",
     "hero.cta1": "Get in touch", "hero.cta2": "See experience",
     "about.title": "About me",
     "about.body": [
