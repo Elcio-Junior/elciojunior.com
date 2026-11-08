@@ -28,7 +28,6 @@
   <header class="site-header">
     <a class="brand" href="#top"><span class="diamond"></span>Elcio Júnior</a>
     <nav class="nav" id="nav">
-      <a href="#about" data-i18n="nav.about"></a>
       <a href="#stack" data-i18n="nav.stack"></a>
       <a href="#experience" data-i18n="nav.experience"></a>
       <a href="#contact" data-i18n="nav.contact"></a>
@@ -45,7 +44,7 @@
         <p class="eyebrow"><span class="diamond"></span><span data-i18n="hero.eyebrow"></span></p>
         <h1 data-i18n="hero.name"></h1>
         <p class="role" data-i18n="hero.role"></p>
-        <p class="lead" data-i18n="hero.summary"></p>
+        <div class="lead prose" id="heroSummary"></div>
         <p class="loc" data-i18n="hero.location"></p>
         <div class="cta">
           <a class="btn primary" href="#contact" data-i18n="hero.cta1"></a>
@@ -57,11 +56,6 @@
           <img id="avatar" src="assets/profile.png" alt="Ilustração de Elcio Júnior" width="400" height="500">
         </div>
       </figure>
-    </section>
-
-    <section id="about" class="section reveal">
-      <h2 class="label"><span class="diamond"></span><span data-i18n="about.title"></span></h2>
-      <div class="card prose" id="aboutBody"></div>
     </section>
 
     <section id="stack" class="section reveal">

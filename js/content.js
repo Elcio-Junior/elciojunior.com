@@ -17,18 +17,16 @@ window.SITE = {
   pt: {
     "meta.description": "Elcio Júnior, engenheiro de software full-stack com .NET, Angular e IA aplicada.",
     "avatar.alt": "Ilustração de Elcio Júnior",
-    "nav.about": "Sobre", "nav.stack": "Stack", "nav.experience": "Experiência", "nav.contact": "Contato",
+    "nav.stack": "Stack", "nav.experience": "Experiência", "nav.contact": "Contato",
     "hero.eyebrow": "Olá, eu sou",
     "hero.name": "Elcio Júnior",
     "hero.role": "Engenheiro de Software Full-Stack | .NET • Angular • IA aplicada",
-    "hero.summary": "Engenheiro full-stack com mais de 10 anos de experiência em C#/.NET e Angular, em projetos para empresas como Dell, ENEL, PNUD e operadoras de telecom no Oriente Médio e na Ásia. Hoje combino desenvolvimento web com integração de IA (LLMs) em produtos reais. Moro em Portugal e trabalho remotamente.",
+    "hero.summary": [
+      "Engenheiro full-stack com mais de 10 anos de experiência em C#/.NET e Angular. Atuo em todo o ciclo de software, da análise de requisitos e arquitetura até testes, CI/CD e entrega, em produtos privados e em projetos governamentais. Já liderei o front-end de produtos multicanal e orientei desenvolvedores juniores.",
+      "Gosto de construir sistemas bem estruturados que resolvem problemas concretos. Hoje combino desenvolvimento web com IA aplicada: assistentes com LLMs, guardrails de escopo, controle de custo por usuário e automações com n8n, rodando na minha própria infraestrutura com Docker e Traefik. Moro em Portugal e trabalho remotamente."
+    ],
     "hero.location": "Viseu, Portugal",
     "hero.cta1": "Fale comigo", "hero.cta2": "Ver experiência",
-    "about.title": "Sobre mim",
-    "about.body": [
-      "Comecei em 2015 desenvolvendo plataformas de pagamento e APIs REST em .NET. Desde então trabalhei em todo o ciclo de software, da análise de requisitos e arquitetura até testes, CI/CD e entrega, em empresas privadas e em projetos governamentais. No backend trabalho com C#, ASP.NET Core, Entity Framework, Dapper, SQL Server e padrões como CQRS, DDD e BFF. No frontend, com Angular moderno (signals, standalone, zoneless e monorepo Nx). Na TIMWE fui Tech Lead de front-end de um marketplace de assinaturas da Etisalat (e&), em que uma única base de código atende quatro canais. Também orientei desenvolvedores juniores.",
-      "Gosto de construir sistemas bem estruturados que resolvem problemas concretos. Nos meus projetos pessoais estou explorando IA aplicada: assistentes com a API do Claude, guardrails de escopo, controle de custo por usuário e automações com n8n. Também administro minha própria infraestrutura em VPS, com Docker e Traefik."
-    ],
     "stack.title": "Tech stack",
     "experience.title": "Experiência",
     "experience.items": [
@@ -57,18 +55,16 @@ window.SITE = {
   en: {
     "meta.description": "Elcio Júnior, full-stack software engineer working with .NET, Angular and applied AI.",
     "avatar.alt": "Illustration of Elcio Júnior",
-    "nav.about": "About", "nav.stack": "Stack", "nav.experience": "Experience", "nav.contact": "Contact",
+    "nav.stack": "Stack", "nav.experience": "Experience", "nav.contact": "Contact",
     "hero.eyebrow": "Hi, I'm",
     "hero.name": "Elcio Júnior",
     "hero.role": "Full-Stack Software Engineer | .NET • Angular • Applied AI",
-    "hero.summary": "Full-stack engineer with over 10 years of experience in C#/.NET and Angular, on projects for companies such as Dell, ENEL, UNDP and telecom operators in the Middle East and Asia. Today I combine web development with AI (LLM) integration in real products. I live in Portugal and work remotely.",
+    "hero.summary": [
+      "Full-stack engineer with over 10 years of experience in C#/.NET and Angular. I work across the whole software lifecycle, from requirements analysis and architecture to testing, CI/CD and delivery, on private products and government projects. I have led the front-end of multichannel products and mentored junior developers.",
+      "I like building well-structured systems that solve concrete problems. Today I combine web development with applied AI: LLM-powered assistants, scope guardrails, per-user cost control and automations with n8n, running on my own infrastructure with Docker and Traefik. I live in Portugal and work remotely."
+    ],
     "hero.location": "Viseu, Portugal",
     "hero.cta1": "Get in touch", "hero.cta2": "See experience",
-    "about.title": "About me",
-    "about.body": [
-      "I started in 2015 building payment platforms and REST APIs in .NET. Since then I have worked across the whole software lifecycle, from requirements analysis and architecture to testing, CI/CD and delivery, at private companies and on government projects. On the backend I work with C#, ASP.NET Core, Entity Framework, Dapper, SQL Server and patterns such as CQRS, DDD and BFF. On the frontend, with modern Angular (signals, standalone, zoneless and Nx monorepos). At TIMWE I was the front-end Tech Lead of a subscription marketplace for Etisalat (e&), where a single codebase serves four channels. I have also mentored junior developers.",
-      "I like building well-structured systems that solve concrete problems. In my personal projects I am exploring applied AI: assistants built on the Claude API, scope guardrails, per-user cost control and automations with n8n. I also run my own VPS infrastructure with Docker and Traefik."
-    ],
     "stack.title": "Tech stack",
     "experience.title": "Experience",
     "experience.items": [
