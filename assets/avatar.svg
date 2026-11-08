@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Avatar ilustrado">
+  <!-- Placeholder flat. Substitua por assets/avatar.png com sua ilustração. -->
+  <path d="M40 500c0-90 70-140 160-140s160 50 160 140z" fill="#2b4a73"/>
+  <path d="M160 360l40 60 40-60-20-20h-40z" fill="#f4f4f4"/>
+  <rect x="172" y="300" width="56" height="60" rx="20" fill="#e8b48f"/>
+  <ellipse cx="200" cy="230" rx="82" ry="95" fill="#f1c4a1"/>
+  <path d="M118 215c-6-70 40-105 86-105s82 36 78 105c-14-34-36-52-82-52s-68 18-82 52z" fill="#3b2d26"/>
+  <circle cx="168" cy="235" r="26" fill="none" stroke="#1d1d1f" stroke-width="5"/>
+  <circle cx="232" cy="235" r="26" fill="none" stroke="#1d1d1f" stroke-width="5"/>
+  <path d="M194 235h12" stroke="#1d1d1f" stroke-width="5"/>
+  <circle cx="168" cy="236" r="5" fill="#1d1d1f"/>
+  <circle cx="232" cy="236" r="5" fill="#1d1d1f"/>
+  <path d="M174 282q26 22 52 0" fill="none" stroke="#9c5a3c" stroke-width="5" stroke-linecap="round"/>
+</svg>
