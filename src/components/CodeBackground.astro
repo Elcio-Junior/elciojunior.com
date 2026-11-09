@@ -1,0 +1,184 @@
+---
+// Fundo de código desenhado em canvas: as colunas rolam em sentidos alternados
+// e cada caractere se afasta do cursor e volta suavemente ao lugar.
+---
+
+<div class="code-bg" aria-hidden="true" id="codeBg"></div>
+
+<script>
+  interface Glyph {
+    ch: string;
+    bx: number;
+    by: number;
+    ox: number;
+    oy: number;
+  }
+
+  interface Column {
+    chars: Glyph[];
+    height: number;
+    speed: number;
+    offset: number;
+  }
+
+  const snippets: string[][] = [
+    ['const elcio = {', '  role: "developer",', '  loves: ["code", "ideas"],', '  build() { return "something great"; }', '};'],
+    ['async function hello() {', '  await coffee();', '  return ship(elcio.build());', '}'],
+    ['git commit -m "feat: be awesome"', 'git push origin main'],
+    ['public async Task<IActionResult> Get()', '{', '    var data = await _mediator.Send(new Query());', '    return Ok(data);', '}'],
+    ['@Component({ standalone: true })', 'export class AppComponent {', '  count = signal(0);', '  inc() { this.count.update(n => n + 1); }', '}'],
+    ['SELECT name, role', 'FROM developers', "WHERE passion = 'code'", 'ORDER BY impact DESC;'],
+    ['while (alive) {', '  learn();', '  build();', '  share();', '}'],
+  ];
+
+  const FONT_SIZE = 12;
+  const LH = 20;
+  const GAP = 48;
+  const PAD = 24;
+  const RADIUS = 130;
+  const PUSH = 46;
+  const EASE = 0.12;
+
+  const root = document.documentElement;
+  const host = document.getElementById('codeBg');
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  if (host && ctx) {
+    host.appendChild(canvas);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let W = 0;
+    let H = 0;
+    let cw = 7.2;
+    let columns: Column[] = [];
+    const colors = { code: 'rgba(0,0,0,.06)', hot: '#b88a2c' };
+    const mouse = { x: -9999, y: -9999 };
+
+    const readColors = () => {
+      const cs = getComputedStyle(root);
+      colors.code = cs.getPropertyValue('--code').trim() || 'rgba(0,0,0,.06)';
+      colors.hot = cs.getPropertyValue('--gold').trim() || '#b88a2c';
+    };
+
+    const build = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = `${FONT_SIZE}px "JetBrains Mono", ui-monospace, Consolas, monospace`;
+      ctx.textBaseline = 'top';
+      cw = ctx.measureText('M').width;
+
+      columns = [];
+      let x = PAD;
+      let c = 0;
+      while (x < W) {
+        const lines: string[] = [];
+        let maxLen = 0;
+        // repete os trechos até a coluna ser mais alta que a tela (loop sem buracos)
+        for (let k = 0; lines.length * LH < H + LH * 4; k++) {
+          const snippet = snippets[(c * 3 + k) % snippets.length] ?? [];
+          snippet.forEach((l) => {
+            lines.push(l);
+            maxLen = Math.max(maxLen, l.length);
+          });
+          lines.push('');
+        }
+        const chars: Glyph[] = [];
+        const colX = x;
+        lines.forEach((line, li) => {
+          for (let i = 0; i < line.length; i++) {
+            const ch = line.charAt(i);
+            if (ch !== ' ') chars.push({ ch, bx: colX + i * cw, by: li * LH, ox: 0, oy: 0 });
+          }
+        });
+        columns.push({
+          chars,
+          height: lines.length * LH,
+          speed: (10 + ((c * 7) % 9)) * (c % 2 ? -1 : 1), // px/s, colunas alternam o sentido
+          offset: c * 137,
+        });
+        x += maxLen * cw + GAP;
+        c++;
+      }
+    };
+
+    let last = performance.now();
+    const frame = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+      ctx.clearRect(0, 0, W, H);
+      const hot: { ch: string; x: number; y: number; m: number }[] = [];
+      ctx.fillStyle = colors.code;
+      columns.forEach((col) => {
+        if (!reduce) col.offset += col.speed * dt;
+        const ch = col.height;
+        for (const p of col.chars) {
+          const y = ((((p.by - col.offset) % ch) + ch) % ch) - LH * 2;
+          if (y < -LH * 2 || y > H) {
+            p.ox = p.oy = 0;
+            continue;
+          }
+          let tx = 0;
+          let ty = 0;
+          if (!reduce) {
+            const dx = p.bx + cw / 2 - mouse.x;
+            const dy = y + LH / 2 - mouse.y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            if (d < RADIUS && d > 0.01) {
+              const f = (1 - d / RADIUS) ** 2 * PUSH;
+              tx = (dx / d) * f;
+              ty = (dy / d) * f;
+            }
+          }
+          p.ox += (tx - p.ox) * EASE;
+          p.oy += (ty - p.oy) * EASE;
+          const m = Math.abs(p.ox) + Math.abs(p.oy);
+          if (m > 1) hot.push({ ch: p.ch, x: p.bx + p.ox, y: y + p.oy, m });
+          else ctx.fillText(p.ch, p.bx + p.ox, y + p.oy);
+        }
+      });
+      // caracteres deslocados ganham um leve brilho dourado
+      if (hot.length) {
+        ctx.fillStyle = colors.hot;
+        for (const h of hot) {
+          ctx.globalAlpha = Math.min(0.45, 0.08 + (h.m / PUSH) * 0.4);
+          ctx.fillText(h.ch, h.x, h.y);
+        }
+        ctx.globalAlpha = 1;
+      }
+      requestAnimationFrame(frame);
+    };
+
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        if (e.pointerType === 'mouse') {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+        }
+      },
+      { passive: true },
+    );
+    const resetMouse = () => {
+      mouse.x = mouse.y = -9999;
+    };
+    document.addEventListener('mouseleave', resetMouse);
+    window.addEventListener('blur', resetMouse);
+
+    let rt: ReturnType<typeof setTimeout> | undefined;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = setTimeout(build, 150);
+    });
+    new MutationObserver(readColors).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
+    readColors();
+    build();
+    // refaz a medida quando a fonte JetBrains Mono terminar de carregar
+    document.fonts?.ready.then(build);
+    requestAnimationFrame(frame);
+  }
+</script>

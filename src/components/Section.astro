@@ -1,0 +1,29 @@
+---
+interface Props {
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<section id={id} class="section reveal">
+  <h2 class="label"><span class="diamond"></span><span>{title}</span></h2>
+  <slot />
+</section>
+
+<script>
+  // Revela cada seção ao entrar na tela (o CSS desativa a animação com prefers-reduced-motion)
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 },
+  );
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>

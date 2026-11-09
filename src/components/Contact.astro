@@ -1,0 +1,30 @@
+---
+import { links } from '../data/links';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<div class="card contact">
+  <p>{t.contactText}</p>
+  <div class="links" id="links">
+    {
+      links.map((link) =>
+        link.url.startsWith('http') ? (
+          <a class="btn" href={link.url} target="_blank" rel="noopener">
+            {link.label}
+          </a>
+        ) : (
+          <a class="btn" href={link.url}>
+            {link.label}
+          </a>
+        ),
+      )
+    }
+  </div>
+</div>
