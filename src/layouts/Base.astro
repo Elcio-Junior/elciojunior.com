@@ -40,7 +40,7 @@ const person = {
   jobTitle: t.jobTitle,
   description: t.metaDescription,
   address: { '@type': 'PostalAddress', addressLocality: 'Viseu', addressCountry: 'PT' },
-  sameAs: links.filter((l) => l.url.startsWith('https://')).map((l) => l.url),
+  sameAs: links.filter((l) => l.icon === 'github' || l.icon === 'linkedin').map((l) => l.url),
 };
 ---
 
