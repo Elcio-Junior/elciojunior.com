@@ -19,7 +19,7 @@ npm run preview    # serve o dist/ para conferir o build
 |---|---|
 | Textos de interface (menu, hero, títulos, botões, meta) | `src/i18n/pt-br.ts` e `src/i18n/en.ts` (tipo em `src/i18n/types.ts`) |
 | Experiência, projetos e formação | `src/data/experience.ts`, `projects.ts`, `education.ts` |
-| Tech stack | `src/data/stack.ts` |
+| Tech stack (torre art déco: ordem do topo para a base) | `src/data/stack.ts` (logos do pacote `simple-icons`), emblemas dos andares em `src/components/stack-emblems.ts`, animação em `StackGrid.astro` |
 | Links de contato | `src/data/links.ts` |
 | Estilos (tema claro/escuro, paleta azul + dourado) | `src/styles/global.css` |
 | Componentes da página | `src/components/` (a página inteira é montada em `HomePage.astro`) |

@@ -1,23 +1,277 @@
 ---
+// Tech stack em forma de arranha-céu art déco: cada categoria é um andar (topo = primeiro item de stack.ts).
+// Ao entrar na tela, os andares caem do alto um por um, da base para o topo, e soltam pedrinhas e poeira
+// quando batem no andar de baixo. Com prefers-reduced-motion (ou sem JS), a torre aparece pronta.
 import { stack } from '../data/stack';
 import type { Locale } from '../i18n';
+import { stackEmblems } from './stack-emblems';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
+
+// Cor da marca no hover, ajustada para ler bem nos dois temas: marcas muito claras escurecem no
+// tema claro e marcas muito escuras clareiam no tema escuro, sem perder o tom.
+const luminance = (hex: string) => {
+  const [r, g, b] = [0, 2, 4].map((p) => {
+    const c = parseInt(hex.slice(p, p + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const brandVars = (hex: string) => {
+  const lum = luminance(hex);
+  const light = lum > 0.45 ? `color-mix(in srgb, #${hex} 62%, #000)` : `#${hex}`;
+  const dark = lum < 0.12 ? `color-mix(in srgb, #${hex} 45%, #fff)` : `#${hex}`;
+  return `--brand-l:${light};--brand-d:${dark}`;
+};
 ---
 
-<div class="grid" id="stackGrid">
-  {
-    stack.map((category) => (
-      <div class="card">
-        <h3>{category.name[locale]}</h3>
-        <ul class="chips">
-          {category.items.map((item) => <li>{item}</li>)}
-        </ul>
-      </div>
-    ))
-  }
+<div class="tower-wrap">
+  <div class="crown" aria-hidden="true">
+    <span class="mast"></span><span class="finial"></span>
+    <span class="tier t1"></span><span class="tier t2"></span><span class="tier t3"></span>
+  </div>
+  <ol class="tower" id="stackGrid" style={`--n:${stack.length}`}>
+    {
+      stack.map((category, index) => (
+        <li class="floor" style={`--i:${index}`}>
+          <div class="floor-head">
+            <span class="emblem" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="19"
+                height="19"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                focusable="false"
+                set:html={stackEmblems[category.emblem]}
+              />
+            </span>
+            <h3>{category.name[locale]}</h3>
+          </div>
+          <ul class="chips">
+            {category.items.map((item) =>
+              item.icon ? (
+                <li class="has-logo" style={brandVars(item.icon.hex)}>
+                  <svg class="ico" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                    <path d={item.icon.path} />
+                  </svg>
+                  {item.name}
+                </li>
+              ) : (
+                <li>
+                  <span class="dia" aria-hidden="true" />
+                  {item.name}
+                </li>
+              ),
+            )}
+          </ul>
+        </li>
+      ))
+    }
+  </ol>
+  <div class="plinth" aria-hidden="true"></div>
+  <canvas class="tower-dust" aria-hidden="true"></canvas>
 </div>
+
+<script>
+  const wrap = document.querySelector<HTMLElement>('.tower-wrap');
+  const canvas = wrap?.querySelector<HTMLCanvasElement>('.tower-dust');
+  const ctx = canvas?.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (wrap && canvas && ctx && !reduce && 'IntersectionObserver' in window && 'animate' in wrap) {
+    const STAGGER = 400; // ms entre um bloco e o seguinte
+    const DROP = 820; // ms de cada queda, do alto até assentar
+    const IMPACT = 0.62; // fração da queda em que o bloco bate no de baixo
+
+    const floors = [...wrap.querySelectorAll<HTMLElement>('.floor')];
+    const crown = wrap.querySelector<HTMLElement>('.crown')!;
+    const crownBase = crown.querySelector<HTMLElement>('.t3')!;
+    // Ordem de montagem: da base para o topo, e a coroa por último
+    const pieces = [...floors].reverse().concat(crown);
+
+    wrap.classList.add('is-armed'); // esconde os blocos até a torre entrar na tela
+
+    // ---- Partículas (pedrinhas e poeira) desenhadas no canvas por cima da torre ----
+    type Pebble = { x: number; y: number; vx: number; vy: number; s: number; r: number; vr: number; c: string; a: number; floor: number };
+    type Puff = { x: number; y: number; vx: number; vy: number; r: number; a: number };
+    const pebbles: Pebble[] = [];
+    const puffs: Puff[] = [];
+    let colors = { gold: '#b88a2c', soft: '#d9b45a', stone: '#5f6368' };
+    let running = false;
+    let last = 0;
+
+    const readColors = () => {
+      const cs = getComputedStyle(document.documentElement);
+      colors = {
+        gold: cs.getPropertyValue('--gold').trim() || colors.gold,
+        soft: cs.getPropertyValue('--gold-soft').trim() || colors.soft,
+        stone: cs.getPropertyValue('--muted').trim() || colors.stone,
+      };
+    };
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(wrap.clientWidth * dpr);
+      canvas.height = Math.round(wrap.clientHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
+    // Solta pedrinhas e poeira ao longo da junta entre o bloco que caiu e o de baixo
+    const burst = (piece: HTMLElement) => {
+      const box = wrap.getBoundingClientRect();
+      const ref = (piece === crown ? crownBase : piece).getBoundingClientRect();
+      const left = ref.left - box.left;
+      const width = ref.width;
+      const seam = ref.bottom - box.top;
+      const mid = left + width / 2;
+
+      const nPebbles = Math.max(8, Math.min(22, Math.round(width / 28) + 6));
+      for (let k = 0; k < nPebbles; k++) {
+        // mais pedrinhas perto das quinas, onde o impacto "racha"
+        const edge = Math.random() < 0.6;
+        const x = edge ? (Math.random() < 0.5 ? left + rand(0, 26) : left + width - rand(0, 26)) : left + rand(0, width);
+        const out = (x - mid) / (width / 2 || 1);
+        pebbles.push({
+          x,
+          y: seam - 1,
+          vx: out * rand(1.2, 3.4) + rand(-0.6, 0.6),
+          vy: -rand(1.6, 4.6),
+          s: rand(2, 4.4),
+          r: rand(0, Math.PI),
+          vr: rand(-0.3, 0.3),
+          c: Math.random() < 0.55 ? colors.gold : Math.random() < 0.5 ? colors.soft : colors.stone,
+          a: 1,
+          floor: seam + rand(18, 46),
+        });
+      }
+      const nPuffs = Math.max(8, Math.min(18, Math.round(width / 40) + 6));
+      for (let k = 0; k < nPuffs; k++) {
+        const x = left + rand(-6, width + 6);
+        const out = (x - mid) / (width / 2 || 1);
+        puffs.push({ x, y: seam + rand(-3, 2), vx: out * rand(0.3, 1.1), vy: -rand(0.15, 0.6), r: rand(5, 11), a: rand(0.3, 0.48) });
+      }
+      if (!running) {
+        running = true;
+        last = performance.now();
+        requestAnimationFrame(frame);
+      }
+    };
+
+    const frame = (now: number) => {
+      const dt = Math.min((now - last) / 16.67, 3);
+      last = now;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let k = puffs.length - 1; k >= 0; k--) {
+        const p = puffs[k];
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.vx *= 0.985;
+        p.r += 0.38 * dt;
+        p.a -= 0.006 * dt;
+        if (p.a <= 0) {
+          puffs.splice(k, 1);
+          continue;
+        }
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+        g.addColorStop(0, colors.stone);
+        g.addColorStop(1, 'transparent');
+        ctx.globalAlpha = p.a;
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (let k = pebbles.length - 1; k >= 0; k--) {
+        const p = pebbles[k];
+        p.vy += 0.24 * dt; // gravidade
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.r += p.vr * dt;
+        if (p.y > p.floor) {
+          // quica uma vez no chão imaginário e vai sumindo
+          p.y = p.floor;
+          p.vy *= -0.32;
+          p.vx *= 0.6;
+          p.vr *= 0.5;
+          p.floor = Infinity;
+        }
+        p.a -= (p.floor === Infinity ? 0.03 : 0.006) * dt;
+        if (p.a <= 0) {
+          pebbles.splice(k, 1);
+          continue;
+        }
+        ctx.globalAlpha = p.a;
+        ctx.fillStyle = p.c;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r);
+        ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.8);
+        ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+
+      if (pebbles.length || puffs.length) requestAnimationFrame(frame);
+      else {
+        running = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+
+    // ---- Montagem da torre ----
+    const build = () => {
+      readColors();
+      resize();
+      pieces.forEach((piece, k) => {
+        const delay = k * STAGGER;
+        piece.style.opacity = '1';
+        piece.animate(
+          [
+            { transform: 'translateY(-170px)', opacity: 0, easing: 'cubic-bezier(.5, 0, .9, .45)' },
+            { transform: 'translateY(0)', opacity: 1, offset: IMPACT, easing: 'ease-out' },
+            { transform: 'translateY(3px) scaleY(.96)', offset: 0.74, easing: 'ease-in-out' },
+            { transform: 'translateY(-4px) scaleY(1.01)', offset: 0.87, easing: 'ease-in' },
+            { transform: 'none' },
+          ],
+          { duration: DROP, delay, fill: 'backwards' },
+        );
+        setTimeout(() => {
+          burst(piece);
+          // o bloco de baixo sente o tranco
+          const below = piece === crown ? floors[0] : floors[floors.indexOf(piece) + 1];
+          below?.animate([{ transform: 'none' }, { transform: 'translateY(2px)' }, { transform: 'none' }], { duration: 220, easing: 'ease-out' });
+        }, delay + DROP * IMPACT);
+      });
+      setTimeout(() => wrap.classList.remove('is-armed'), pieces.length * STAGGER + DROP);
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          build();
+        }
+      },
+      // começa quando o topo da torre passa de 1/4 da altura da tela (a torre pode ser mais alta que a tela)
+      { rootMargin: '0px 0px -25% 0px' },
+    );
+    io.observe(wrap);
+
+    let rt: ReturnType<typeof setTimeout> | undefined;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = setTimeout(resize, 150);
+    });
+  }
+</script>

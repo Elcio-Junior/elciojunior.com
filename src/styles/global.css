@@ -140,6 +140,65 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
 .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
 .chips li { font: 13px var(--mono); padding: 5px 12px; border-radius: 980px; border: 1px solid var(--line); background: var(--bg); }
 
+/* Tech stack em arranha-céu art déco (StackGrid.astro): cada categoria é um andar, mais estreito no topo */
+.tower-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
+.tower { --step: 14px; list-style: none; margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; align-items: center; }
+.floor {
+  position: relative; width: calc(100% - (var(--n) - 1 - var(--i)) * var(--step) * 2); padding: 16px 18px 18px;
+  background: var(--surface); border: 1px solid var(--gold-soft); border-bottom: 0;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transform-origin: 50% 100%;
+}
+/* cornija dupla no alto de cada andar */
+.floor::before {
+  content: ""; position: absolute; left: -1px; right: -1px; top: -1px; height: 4px;
+  border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold);
+}
+.floor-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.floor h3 { font: 800 18px var(--serif); color: var(--gold); }
+.emblem {
+  display: grid; place-items: center; flex: none; width: 34px; height: 34px; color: var(--gold);
+  border: 1.5px solid var(--gold); border-radius: 999px 999px 6px 6px; background: var(--bg);
+}
+.tower .chips li { display: inline-flex; align-items: center; gap: 7px; padding-left: 10px; transition: border-color .2s; }
+.tower .chips li:hover { border-color: var(--gold-soft); }
+.tower .ico { flex: none; fill: currentColor; color: var(--gold); transition: color .2s; }
+.tower .has-logo:hover .ico { color: var(--brand-l); }
+[data-theme="dark"] .tower .has-logo:hover .ico { color: var(--brand-d); }
+.tower .dia { flex: none; width: 7px; height: 7px; margin: 0 3px; background: var(--gold); transform: rotate(45deg); }
+
+/* coroa: mastro, losango e três degraus, com raios atrás */
+.crown { position: relative; width: 100%; height: 92px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; transform-origin: 50% 100%; }
+.crown::before {
+  content: ""; position: absolute; left: 50%; bottom: 0; width: 260px; max-width: 90%; height: 92px; transform: translateX(-50%);
+  background: repeating-conic-gradient(from -90deg at 50% 100%, var(--arch-rays) 0 6deg, transparent 6deg 12deg);
+  -webkit-mask: radial-gradient(circle at 50% 100%, #000 55%, transparent 72%); mask: radial-gradient(circle at 50% 100%, #000 55%, transparent 72%);
+}
+.crown .mast { position: relative; width: 2px; height: 22px; background: var(--gold); }
+.crown .finial { position: relative; width: 12px; height: 12px; margin-bottom: 4px; background: var(--gold); transform: rotate(45deg); }
+.crown .tier { position: relative; height: 12px; border: 1.5px solid var(--gold); border-bottom: 0; background: var(--bg); }
+.crown .t1 { width: 54px; }
+.crown .t2 { width: 110px; }
+.crown .t3 { width: 180px; max-width: 70%; }
+
+/* pedestal escalonado, no desenho da base do retrato */
+.plinth { width: calc(100% + 16px); height: 6px; border-top: 2px solid var(--gold); border-bottom: 1px solid var(--gold); }
+.plinth::after { content: ""; display: block; margin: 9px -10px 0; height: 5px; border-radius: 2px; background: var(--gold-soft); }
+.tower-dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* até a torre entrar na tela, os blocos ficam escondidos (o script os derruba um a um) */
+.is-armed .floor, .is-armed .crown { opacity: 0; }
+
+@media (max-width: 760px) {
+  .tower { --step: 4px; }
+  .floor { padding: 14px 12px; }
+  .plinth { width: calc(100% + 8px); }
+  .plinth::after { margin-inline: -6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tower .chips li, .tower .ico { transition: none; }
+  .is-armed .floor, .is-armed .crown { opacity: 1; }
+}
+
 .timeline { display: grid; gap: 18px; }
 
 /* Atalhos (GitHub, LinkedIn, e-mail): mini-arcos dourados, no mesmo desenho da moldura do retrato */
