@@ -8,7 +8,8 @@ O plano de evolução por fases está em [docs/PLANO-MIGRACAO-ASTRO.md](docs/PLA
 ```bash
 npm install        # dependências (Node: versão em .nvmrc)
 npm run dev        # servidor local em http://localhost:4321
-npm run build      # astro check (tipos) + build em dist/
+npm run check:i18n # confere se PT e EN têm as mesmas chaves e nenhum texto vazio
+npm run build      # check:i18n + astro check (tipos) + build em dist/
 npm run preview    # serve o dist/ para conferir o build
 ```
 

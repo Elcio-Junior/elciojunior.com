@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "npm run check:i18n && astro check && astro build",
+    "check:i18n": "node scripts/check-i18n.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
