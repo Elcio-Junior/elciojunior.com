@@ -25,7 +25,9 @@ npm run preview    # serve o dist/ para conferir o build
 | Componentes da página | `src/components/` (a página inteira é montada em `HomePage.astro`) |
 | Rotas | `src/pages/index.astro` (pt-br, em `/`) e `src/pages/en/index.astro` (en, em `/en/`) |
 | Foto/ilustração | `src/assets/img/` (otimizada pelo `<Image>` do Astro) |
-| Favicons, robots.txt, CNAME | `public/` |
+| Favicons, robots.txt, CNAME, og.jpg | `public/` |
+| Deploy (GitHub Pages + DNS da Hostinger) | `.github/workflows/deploy.yml` e [docs/deploy.md](docs/deploy.md) |
+| Imagens geradas com IA | `scripts/gen-image.mjs`, `scripts/prompts/` e [docs/images.md](docs/images.md) |
 | Arte original do favicon (2000×2000, não entra no build) | `src/assets/img/favicon-source.webp` |
 | Fontes (Fraunces e JetBrains Mono, hospedadas no site) | pacotes `@fontsource*`, importados em `src/layouts/Base.astro` |
 
