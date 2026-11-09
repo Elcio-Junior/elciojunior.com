@@ -1,0 +1,60 @@
+---
+// Página 404 bilíngue: o GitHub Pages serve este mesmo arquivo para qualquer endereço inexistente,
+// então ela mostra PT e EN juntos.
+import Base from '../layouts/Base.astro';
+import { homePath, useTranslations } from '../i18n';
+
+const pt = useTranslations('pt-br');
+const en = useTranslations('en');
+---
+
+<Base locale="pt-br" title={`404 · ${pt.notFound.heading} / ${en.notFound.heading}`} noindex>
+  <main class="not-found">
+    <p class="code">404</p>
+    <div class="msgs">
+      <section lang={pt.htmlLang}>
+        <h1>{pt.notFound.heading}</h1>
+        <p>{pt.notFound.text}</p>
+        <a class="btn primary" href={homePath('pt-br')}>{pt.notFound.back}</a>
+      </section>
+      <section lang={en.htmlLang}>
+        <h2>{en.notFound.heading}</h2>
+        <p>{en.notFound.text}</p>
+        <a class="btn" href={homePath('en')}>{en.notFound.back}</a>
+      </section>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .not-found {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+    padding: 48px 16px;
+  }
+  .code {
+    font: 800 clamp(96px, 20vw, 168px) / 1 var(--serif);
+    color: var(--gold);
+  }
+  .msgs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+    max-width: 720px;
+    width: 100%;
+  }
+  h1,
+  h2 {
+    font: 700 26px var(--serif);
+    margin-bottom: 8px;
+  }
+  .msgs p {
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+</style>
