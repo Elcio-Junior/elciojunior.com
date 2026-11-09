@@ -11,7 +11,7 @@
   --ray: rgba(184, 138, 44, .09);
   --arch-bg: linear-gradient(180deg, #cfe6f7 0%, #f3e6c4 100%);
   --code: rgba(0, 0, 0, .06);
-  --serif: "Fraunces", Georgia, serif;
+  --serif: "Fraunces Variable", "Fraunces", Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Inter, Roboto, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
 }
