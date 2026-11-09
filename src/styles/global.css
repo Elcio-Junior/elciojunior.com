@@ -75,6 +75,7 @@ a { color: var(--blue); }
   border: 1px solid var(--line); background: var(--surface); color: var(--text); font: 600 14px var(--sans);
 }
 .icon-btn:hover { border-color: var(--gold); }
+a.icon-btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 
 main { max-width: 1080px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px); }

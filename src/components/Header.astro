@@ -7,7 +7,9 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-const otherHref = homePath(otherLocale(locale));
+const other = otherLocale(locale);
+const otherHref = homePath(other);
+const otherT = useTranslations(other);
 ---
 
 <header class="site-header">
@@ -18,21 +20,22 @@ const otherHref = homePath(otherLocale(locale));
     <a href="#contact">{t.nav.contact}</a>
   </nav>
   <div class="tools">
-    <!-- Fase 2: vira um <a href> sem JS -->
-    <button id="langBtn" class="icon-btn" type="button" aria-label={t.langSwitch.aria} data-href={otherHref}>
+    <a
+      id="langBtn"
+      class="icon-btn"
+      href={otherHref}
+      hreflang={otherT.htmlLang}
+      lang={otherT.htmlLang}
+      aria-label={t.langSwitch.aria}
+    >
       {t.langSwitch.label}
-    </button>
+    </a>
     <button id="themeBtn" class="icon-btn" type="button" aria-label={t.themeToggleAria}>◐</button>
   </div>
 </header>
 
 <script>
   const root = document.documentElement;
-
-  document.getElementById('langBtn')?.addEventListener('click', (e) => {
-    const href = (e.currentTarget as HTMLElement).dataset.href;
-    if (href) location.href = href;
-  });
 
   document.getElementById('themeBtn')?.addEventListener('click', () => {
     const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
