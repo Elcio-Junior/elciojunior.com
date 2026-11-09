@@ -9,6 +9,8 @@ export interface UIStrings {
   /** Cargo usado no JSON-LD (Person.jobTitle) */
   jobTitle: string;
   notFound: { title: string; heading: string; text: string; back: string };
+  /** Texto alternativo dos pôsteres ilustrados de cada seção (descrever a imagem escolhida). */
+  posters: { stack: string; experience: string; projects: string; education: string; contact: string };
   avatarAlt: string;
   nav: { stack: string; experience: string; contact: string };
   langSwitch: { label: string; aria: string };

@@ -123,6 +123,19 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
 .chips li { font: 13px var(--mono); padding: 5px 12px; border-radius: 980px; border: 1px solid var(--line); background: var(--bg); }
 
 .timeline { display: grid; gap: 18px; }
+
+/* Pôster ilustrado ao lado do conteúdo da seção (moldura em arco, como o retrato do hero) */
+.section-body { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 40px; align-items: start; }
+.section-main { min-width: 0; }
+.poster {
+  position: sticky; top: 96px; padding: 6px; border-radius: 126px 126px 18px 18px;
+  border: 2px solid var(--gold); background: var(--surface); box-shadow: 0 0 0 5px var(--bg), 0 0 0 6px var(--gold-soft);
+}
+.poster img { display: block; width: 100%; height: auto; border-radius: 120px 120px 12px 12px; }
+@media (max-width: 900px) {
+  .section-body { grid-template-columns: 1fr; }
+  .poster { display: none; }
+}
 .item .meta { font: 13px var(--mono); color: var(--gold); }
 .item h3 { font: 800 20px var(--serif); margin: 4px 0 8px; }
 .item p { color: var(--muted); }

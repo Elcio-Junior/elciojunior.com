@@ -13,6 +13,13 @@ export const ptBr: UIStrings = {
     text: 'O endereço que você abriu não existe ou mudou de lugar.',
     back: 'Voltar para o início',
   },
+  posters: {
+    stack: 'Ilustração art déco de um arranha-céu em camadas: bancos de dados na base, servidores no meio e telas de interface no topo, ligados por circuitos dourados sob um sol radiante.',
+    experience: 'Ilustração art déco de um globo sobre um pedestal, com arcos dourados ligando pontos luminosos em vários continentes, dentro de um arco com raios de sol.',
+    projects: 'Ilustração art déco de uma prancheta com a planta de um prédio, compasso e régua, um guindaste ao fundo e balões de conversa e engrenagens no céu.',
+    education: 'Ilustração art déco de um livro aberto sobre um pedestal, com um sol dourado nascendo das páginas e uma coroa de louros sob um céu estrelado.',
+    contact: 'Ilustração art déco de um avião de papel dourado voando sobre colinas e uma cidade com catedral, sob um arco de raios e uma lua crescente.',
+  },
   avatarAlt: 'Ilustração de Elcio Júnior',
   nav: { stack: 'Stack', experience: 'Experiência', contact: 'Contato' },
   langSwitch: { label: 'EN', aria: 'Ver em inglês' },
