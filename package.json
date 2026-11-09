@@ -8,7 +8,9 @@
     "build": "npm run check:i18n && astro check && astro build",
     "check:i18n": "node scripts/check-i18n.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "gen:image": "node scripts/gen-image.mjs",
+    "make:og": "node scripts/make-og.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -18,6 +20,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "sharp": "^0.35.5",
     "typescript": "^6.0.3"
   }
 }

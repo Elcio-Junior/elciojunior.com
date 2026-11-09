@@ -1,0 +1,7 @@
+Art direction (applies to every image):
+Art deco poster illustration in the spirit of 1930s travel posters, reinterpreted for a modern software engineer's portfolio.
+Strong symmetric composition, geometric shapes, stepped forms, radiating sunburst rays and arched frames.
+Limited palette: deep navy (#0b1320), midnight blue (#1e3a60), muted steel blue (#5eb0ff used sparingly), warm gold (#d9b45a), pale gold (#e8cc82) and soft cream highlights.
+Clean confident line work with flat color fills and subtle grain; gentle gradients only in the sky or background.
+Elegant, calm and premium mood; no clutter.
+Strict rules: absolutely no text, no letters, no numbers, no words, no logos, no signatures, no watermarks, no UI screenshots, no human faces.
