@@ -4,7 +4,7 @@ import '@fontsource-variable/fraunces/opsz.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '../styles/global.css';
 import CodeBackground from '../components/CodeBackground.astro';
-import { useTranslations, type Locale } from '../i18n';
+import { defaultLocale, homePath, locales, useTranslations, type Locale } from '../i18n';
 
 interface Props {
   locale: Locale;
@@ -12,6 +12,13 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+
+// hreflang: cada página aponta para todas as versões (inclusive ela mesma), com URL absoluta
+const absolute = (path: string) => new URL(path, Astro.site).href;
+const alternates = [
+  ...locales.map((l) => ({ hreflang: useTranslations(l).htmlLang, href: absolute(homePath(l)) })),
+  { hreflang: 'x-default', href: absolute(homePath(defaultLocale)) },
+];
 ---
 
 <!doctype html>
@@ -21,6 +28,7 @@ const t = useTranslations(locale);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{t.title}</title>
     <meta name="description" content={t.metaDescription} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512" />
