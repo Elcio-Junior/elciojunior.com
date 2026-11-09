@@ -1,0 +1,43 @@
+# Publica o site no GitHub Pages a cada push na main (ou manualmente pela aba Actions).
+# Receita oficial do Astro: https://docs.astro.build/en/guides/deploy/github/
+name: Deploy no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Botão "Run workflow" na aba Actions, para publicar sem precisar de commit novo
+  workflow_dispatch:
+
+# Permissões mínimas: ler o código e publicar no Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita duas publicações ao mesmo tempo: a segunda espera a primeira terminar
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v7
+      - name: Instalar, gerar o build e enviar o dist/
+        uses: withastro/action@v6
+        with:
+          # mesma versão do .nvmrc (o padrão da action é 24)
+          node-version: 26
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
