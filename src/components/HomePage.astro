@@ -12,6 +12,12 @@ import { education } from '../data/education';
 import { experience } from '../data/experience';
 import { projects } from '../data/projects';
 import { useTranslations, type Locale } from '../i18n';
+// Pôsteres ilustrados gerados com IA (ver docs/images.md)
+import posterContact from '../assets/img/gen/poster-contact.webp';
+import posterEducation from '../assets/img/gen/poster-education.webp';
+import posterExperience from '../assets/img/gen/poster-experience.webp';
+import posterProjects from '../assets/img/gen/poster-projects.webp';
+import posterStack from '../assets/img/gen/poster-stack.webp';
 
 interface Props {
   locale: Locale;
@@ -26,23 +32,23 @@ const t = useTranslations(locale);
   <main id="top">
     <Hero locale={locale} />
 
-    <Section id="stack" title={t.sections.stack}>
+    <Section id="stack" title={t.sections.stack} poster={posterStack} posterAlt={t.posters.stack}>
       <StackGrid locale={locale} />
     </Section>
 
-    <Section id="experience" title={t.sections.experience}>
+    <Section id="experience" title={t.sections.experience} poster={posterExperience} posterAlt={t.posters.experience}>
       <Timeline id="expList" items={experience[locale]} />
     </Section>
 
-    <Section id="projects" title={t.sections.projects}>
+    <Section id="projects" title={t.sections.projects} poster={posterProjects} posterAlt={t.posters.projects}>
       <Timeline id="projList" items={projects[locale]} layout="grid" />
     </Section>
 
-    <Section id="education" title={t.sections.education}>
+    <Section id="education" title={t.sections.education} poster={posterEducation} posterAlt={t.posters.education}>
       <Timeline id="eduList" items={education[locale]} layout="grid" />
     </Section>
 
-    <Section id="contact" title={t.sections.contact}>
+    <Section id="contact" title={t.sections.contact} poster={posterContact} posterAlt={t.posters.contact}>
       <Contact locale={locale} />
     </Section>
   </main>

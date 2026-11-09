@@ -11,3 +11,6 @@ dist/
 .claude/
 .DS_Store
 Thumbs.db
+
+# rascunhos de imagens geradas por IA (só a escolhida é commitada)
+src/assets/img/gen/_drafts/

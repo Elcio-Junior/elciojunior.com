@@ -10,6 +10,7 @@
   --shadow: 0 8px 30px rgba(0, 0, 0, .08);
   --ray: rgba(184, 138, 44, .09);
   --arch-bg: linear-gradient(180deg, #cfe6f7 0%, #f3e6c4 100%);
+  --arch-rays: rgba(184, 138, 44, .16);
   --code: rgba(0, 0, 0, .06);
   --serif: "Fraunces Variable", "Fraunces", Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Inter, Roboto, sans-serif;
@@ -26,7 +27,8 @@
   --line: rgba(255, 255, 255, .1);
   --shadow: 0 8px 30px rgba(0, 0, 0, .4);
   --ray: rgba(217, 180, 90, .08);
-  --arch-bg: linear-gradient(180deg, #0f5c6e 0%, #0b2a3d 100%);
+  --arch-bg: linear-gradient(180deg, #24476f 0%, #10213a 100%);
+  --arch-rays: rgba(217, 180, 90, .14);
   --code: rgba(255, 255, 255, .07);
 }
 
@@ -75,6 +77,7 @@ a { color: var(--blue); }
   border: 1px solid var(--line); background: var(--surface); color: var(--text); font: 600 14px var(--sans);
 }
 .icon-btn:hover { border-color: var(--gold); }
+a.icon-btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 
 main { max-width: 1080px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px); }
@@ -97,10 +100,26 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
 .btn.primary { background: var(--gold); color: #fff; }
 [data-theme="dark"] .btn.primary { color: #1a1405; }
 
-.arch { justify-self: center; width: min(100%, 380px); padding: 10px; border: 2px solid var(--gold); border-radius: 999px 999px 24px 24px; }
+/* Moldura art déco do retrato: aro duplo, pedra de fecho em losango, base escalonada e raios atrás da foto */
+/* Coluna do retrato: moldura + atalhos com ícones logo abaixo */
+.hero-media { justify-self: center; width: min(100%, 380px); display: flex; flex-direction: column; align-items: center; gap: 50px; }
+.arch {
+  position: relative; width: 100%; padding: 12px;
+  border: 2px solid var(--gold); border-radius: 999px 999px 20px 20px; background: var(--surface);
+  box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px var(--gold-soft), var(--shadow);
+}
+.arch::before {
+  content: ""; position: absolute; top: -12px; left: 50%; width: 18px; height: 18px; z-index: 1;
+  background: var(--gold); border: 4px solid var(--bg); transform: translateX(-50%) rotate(45deg);
+}
+.arch::after {
+  content: ""; position: absolute; left: 16%; right: 16%; bottom: -20px; height: 5px; border-radius: 2px;
+  background: var(--gold); box-shadow: 0 10px 0 2px var(--gold-soft);
+}
 .arch-inner {
-  border: 1px solid var(--gold-soft); border-radius: 999px 999px 16px 16px; overflow: hidden;
-  background: var(--arch-bg); aspect-ratio: 4 / 5; box-shadow: var(--shadow);
+  border: 1px solid var(--gold-soft); border-radius: 999px 999px 12px 12px; overflow: hidden;
+  background: repeating-conic-gradient(from 0deg at 50% 36%, var(--arch-rays) 0 5deg, transparent 5deg 10deg), var(--arch-bg);
+  aspect-ratio: 4 / 5;
 }
 .arch img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -122,6 +141,30 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
 .chips li { font: 13px var(--mono); padding: 5px 12px; border-radius: 980px; border: 1px solid var(--line); background: var(--bg); }
 
 .timeline { display: grid; gap: 18px; }
+
+/* Atalhos (GitHub, LinkedIn, e-mail): mini-arcos dourados, no mesmo desenho da moldura do retrato */
+.socials { display: flex; gap: 14px; list-style: none; padding: 0; margin: 0; }
+.social {
+  display: grid; place-items: center; width: 48px; height: 52px; padding-top: 4px; color: var(--gold);
+  border: 1.5px solid var(--gold); border-radius: 999px 999px 10px 10px; background: var(--surface);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--gold-soft);
+  transition: background-color .2s, color .2s, transform .2s;
+}
+.social:hover { background: var(--gold); color: var(--bg); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .social, .social:hover { transition: none; transform: none; } }
+
+/* Pôster ilustrado ao lado do conteúdo da seção (moldura em arco, como o retrato do hero) */
+.section-body { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 40px; align-items: start; }
+.section-main { min-width: 0; }
+.poster {
+  position: sticky; top: 96px; padding: 6px; border-radius: 126px 126px 18px 18px;
+  border: 2px solid var(--gold); background: var(--surface); box-shadow: 0 0 0 5px var(--bg), 0 0 0 6px var(--gold-soft);
+}
+.poster img { display: block; width: 100%; height: auto; border-radius: 120px 120px 12px 12px; }
+@media (max-width: 900px) {
+  .section-body { grid-template-columns: 1fr; }
+  .poster { display: none; }
+}
 .item .meta { font: 13px var(--mono); color: var(--gold); }
 .item h3 { font: 800 20px var(--serif); margin: 4px 0 8px; }
 .item p { color: var(--muted); }
@@ -142,5 +185,5 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
   .nav { display: none; }
   .tools { margin-left: auto; }
   .hero { grid-template-columns: 1fr; min-height: auto; gap: 32px; }
-  .arch { order: -1; width: min(75%, 300px); }
+  .hero-media { order: -1; width: min(75%, 300px); gap: 48px; margin-bottom: 8px; }
 }

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import profile from '../assets/img/profile.png';
+import SocialIcons from './SocialIcons.astro';
 import { useTranslations, type Locale } from '../i18n';
 
 interface Props {
@@ -25,19 +26,22 @@ const t = useTranslations(locale);
       <a class="btn" href="#experience">{t.hero.ctaExperience}</a>
     </div>
   </div>
-  <figure class="arch">
-    <div class="arch-inner">
-      <Image
-        id="avatar"
-        src={profile}
-        alt={t.avatarAlt}
-        width={400}
-        height={500}
-        widths={[300, 400, 600, 760]}
-        sizes="(max-width: 760px) min(75vw, 300px), 380px"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
-  </figure>
+  <div class="hero-media">
+    <figure class="arch">
+      <div class="arch-inner">
+        <Image
+          id="avatar"
+          src={profile}
+          alt={t.avatarAlt}
+          width={400}
+          height={500}
+          widths={[300, 400, 600, 760]}
+          sizes="(max-width: 760px) min(75vw, 300px), 380px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </figure>
+    <SocialIcons locale={locale} />
+  </div>
 </section>
