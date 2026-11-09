@@ -10,6 +10,7 @@
   --shadow: 0 8px 30px rgba(0, 0, 0, .08);
   --ray: rgba(184, 138, 44, .09);
   --arch-bg: linear-gradient(180deg, #cfe6f7 0%, #f3e6c4 100%);
+  --arch-rays: rgba(184, 138, 44, .16);
   --code: rgba(0, 0, 0, .06);
   --serif: "Fraunces Variable", "Fraunces", Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Inter, Roboto, sans-serif;
@@ -26,7 +27,8 @@
   --line: rgba(255, 255, 255, .1);
   --shadow: 0 8px 30px rgba(0, 0, 0, .4);
   --ray: rgba(217, 180, 90, .08);
-  --arch-bg: linear-gradient(180deg, #0f5c6e 0%, #0b2a3d 100%);
+  --arch-bg: linear-gradient(180deg, #24476f 0%, #10213a 100%);
+  --arch-rays: rgba(217, 180, 90, .14);
   --code: rgba(255, 255, 255, .07);
 }
 
@@ -98,10 +100,24 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
 .btn.primary { background: var(--gold); color: #fff; }
 [data-theme="dark"] .btn.primary { color: #1a1405; }
 
-.arch { justify-self: center; width: min(100%, 380px); padding: 10px; border: 2px solid var(--gold); border-radius: 999px 999px 24px 24px; }
+/* Moldura art déco do retrato: aro duplo, pedra de fecho em losango, base escalonada e raios atrás da foto */
+.arch {
+  position: relative; justify-self: center; width: min(100%, 380px); padding: 12px;
+  border: 2px solid var(--gold); border-radius: 999px 999px 20px 20px; background: var(--surface);
+  box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px var(--gold-soft), var(--shadow);
+}
+.arch::before {
+  content: ""; position: absolute; top: -12px; left: 50%; width: 18px; height: 18px; z-index: 1;
+  background: var(--gold); border: 4px solid var(--bg); transform: translateX(-50%) rotate(45deg);
+}
+.arch::after {
+  content: ""; position: absolute; left: 16%; right: 16%; bottom: -20px; height: 5px; border-radius: 2px;
+  background: var(--gold); box-shadow: 0 10px 0 2px var(--gold-soft);
+}
 .arch-inner {
-  border: 1px solid var(--gold-soft); border-radius: 999px 999px 16px 16px; overflow: hidden;
-  background: var(--arch-bg); aspect-ratio: 4 / 5; box-shadow: var(--shadow);
+  border: 1px solid var(--gold-soft); border-radius: 999px 999px 12px 12px; overflow: hidden;
+  background: repeating-conic-gradient(from 0deg at 50% 36%, var(--arch-rays) 0 5deg, transparent 5deg 10deg), var(--arch-bg);
+  aspect-ratio: 4 / 5;
 }
 .arch img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -156,5 +172,5 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
   .nav { display: none; }
   .tools { margin-left: auto; }
   .hero { grid-template-columns: 1fr; min-height: auto; gap: 32px; }
-  .arch { order: -1; width: min(75%, 300px); }
+  .arch { order: -1; width: min(75%, 300px); margin-bottom: 20px; }
 }
