@@ -225,7 +225,7 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
   .poster { display: none; }
 }
 .item .meta { font: 13px var(--mono); color: var(--gold); }
-.item h3 { font: 800 20px var(--serif); margin: 4px 0 8px; }
+.item h3 { font: 800 20px var(--serif); margin: 4px 0 8px; color: var(--gold); }
 .item p { color: var(--muted); }
 
 .contact p { margin-bottom: 18px; }
