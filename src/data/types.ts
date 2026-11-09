@@ -12,7 +12,11 @@ export interface StackCategory {
   items: string[];
 }
 
+export type SocialIcon = 'github' | 'linkedin' | 'email';
+
 export interface SocialLink {
   label: string;
   url: string;
+  /** Ícone mostrado nos atalhos abaixo do retrato (SocialIcons.astro). */
+  icon: SocialIcon;
 }

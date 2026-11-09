@@ -101,8 +101,10 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
 [data-theme="dark"] .btn.primary { color: #1a1405; }
 
 /* Moldura art déco do retrato: aro duplo, pedra de fecho em losango, base escalonada e raios atrás da foto */
+/* Coluna do retrato: moldura + atalhos com ícones logo abaixo */
+.hero-media { justify-self: center; width: min(100%, 380px); display: flex; flex-direction: column; align-items: center; gap: 50px; }
 .arch {
-  position: relative; justify-self: center; width: min(100%, 380px); padding: 12px;
+  position: relative; width: 100%; padding: 12px;
   border: 2px solid var(--gold); border-radius: 999px 999px 20px 20px; background: var(--surface);
   box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px var(--gold-soft), var(--shadow);
 }
@@ -140,6 +142,17 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
 
 .timeline { display: grid; gap: 18px; }
 
+/* Atalhos (GitHub, LinkedIn, e-mail): mini-arcos dourados, no mesmo desenho da moldura do retrato */
+.socials { display: flex; gap: 14px; list-style: none; padding: 0; margin: 0; }
+.social {
+  display: grid; place-items: center; width: 48px; height: 52px; padding-top: 4px; color: var(--gold);
+  border: 1.5px solid var(--gold); border-radius: 999px 999px 10px 10px; background: var(--surface);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--gold-soft);
+  transition: background-color .2s, color .2s, transform .2s;
+}
+.social:hover { background: var(--gold); color: var(--bg); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .social, .social:hover { transition: none; transform: none; } }
+
 /* Pôster ilustrado ao lado do conteúdo da seção (moldura em arco, como o retrato do hero) */
 .section-body { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 40px; align-items: start; }
 .section-main { min-width: 0; }
@@ -172,5 +185,5 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
   .nav { display: none; }
   .tools { margin-left: auto; }
   .hero { grid-template-columns: 1fr; min-height: auto; gap: 32px; }
-  .arch { order: -1; width: min(75%, 300px); margin-bottom: 20px; }
+  .hero-media { order: -1; width: min(75%, 300px); gap: 48px; margin-bottom: 8px; }
 }

@@ -24,6 +24,7 @@ export const en: UIStrings = {
   nav: { stack: 'Stack', experience: 'Experience', contact: 'Contact' },
   langSwitch: { label: 'PT', aria: 'Ver em português' },
   themeToggleAria: 'Toggle light/dark theme',
+  socials: { aria: 'Social links and contact', newTab: '(opens in a new tab)' },
   hero: {
     eyebrow: "Hi, I'm",
     name: 'Elcio Júnior',

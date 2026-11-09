@@ -1,0 +1,64 @@
+---
+// Atalhos com ícones abaixo do retrato. Os ícones são SVG desenhados para o site (traço dourado,
+// cantos chanfrados art déco), não logotipos copiados; a cor vem de currentColor e segue o tema.
+import { links } from '../data/links';
+import type { SocialIcon } from '../data/types';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const icons: Record<SocialIcon, string> = {
+  // gato do GitHub em traço contínuo, com a cauda
+  github:
+    '<path d="M8.6 20.6v-2.4c0-.9.3-1.5.8-2-3-.4-5.4-1.7-5.4-5.7 0-1.2.4-2.2 1.1-3-.2-.6-.4-1.9.2-3.4 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.5.4 2.8.2 3.4.7.8 1.1 1.8 1.1 3 0 4-2.4 5.3-5.4 5.7.5.5.8 1.2.8 2.1v2.3"/>' +
+    '<path d="M8.6 18.4c-2.8.9-3.4-1.3-4.7-1.7"/>',
+  // "in" dentro de um quadro octogonal (canto chanfrado)
+  linkedin:
+    '<path d="M7 3h10l4 4v10l-4 4H7l-4-4V7z"/>' +
+    '<path d="M8.5 11v5.5M12 16.5V11m0 2.6c0-1.5 1-2.6 2.3-2.6s2.2 1 2.2 2.6v2.9"/>' +
+    '<circle cx="8.5" cy="8.2" r=".6" fill="currentColor"/>',
+  // envelope com um losango como lacre
+  email:
+    '<path d="M3.5 6.5h17v11h-17z"/>' +
+    '<path d="m3.5 7 7.4 5.6M20.5 7l-7.4 5.6"/>' +
+    '<path d="m12 11.4 1.6 1.6-1.6 1.6-1.6-1.6z" fill="currentColor"/>',
+};
+---
+
+<ul class="socials" aria-label={t.socials.aria}>
+  {
+    links.map((link) => {
+      const external = link.url.startsWith('http');
+      return (
+        <li>
+          <a
+            class="social"
+            href={link.url}
+            aria-label={external ? `${link.label} ${t.socials.newTab}` : link.label}
+            title={link.label}
+            {...(external ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+              set:html={icons[link.icon]}
+            />
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>

@@ -15,6 +15,8 @@ export interface UIStrings {
   nav: { stack: string; experience: string; contact: string };
   langSwitch: { label: string; aria: string };
   themeToggleAria: string;
+  /** Atalhos com ícones abaixo do retrato: nome da lista e sufixo para links que abrem em nova aba. */
+  socials: { aria: string; newTab: string };
   hero: {
     eyebrow: string;
     name: string;
