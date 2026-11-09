@@ -4,21 +4,44 @@ import '@fontsource-variable/fraunces/opsz.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '../styles/global.css';
 import CodeBackground from '../components/CodeBackground.astro';
-import { defaultLocale, homePath, locales, useTranslations, type Locale } from '../i18n';
+import profile from '../assets/img/profile.png';
+import { links } from '../data/links';
+import { defaultLocale, homePath, locales, otherLocale, useTranslations, type Locale } from '../i18n';
 
 interface Props {
   locale: Locale;
+  /** Substitui o título padrão do idioma (ex.: página 404). */
+  title?: string;
+  /** Páginas que não devem aparecer no Google (ex.: 404): sem canonical, hreflang nem JSON-LD. */
+  noindex?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, title, noindex = false } = Astro.props;
 const t = useTranslations(locale);
+const pageTitle = title ?? t.title;
+
+const absolute = (path: string) => new URL(path, Astro.site).href;
+const canonical = absolute(homePath(locale));
+const ogImage = absolute('/og.jpg');
 
 // hreflang: cada página aponta para todas as versões (inclusive ela mesma), com URL absoluta
-const absolute = (path: string) => new URL(path, Astro.site).href;
 const alternates = [
   ...locales.map((l) => ({ hreflang: useTranslations(l).htmlLang, href: absolute(homePath(l)) })),
   { hreflang: 'x-default', href: absolute(homePath(defaultLocale)) },
 ];
+
+// Dados estruturados para o Google (schema.org/Person)
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Elcio Júnior',
+  url: canonical,
+  image: absolute(profile.src),
+  jobTitle: t.jobTitle,
+  description: t.metaDescription,
+  address: { '@type': 'PostalAddress', addressLocality: 'Viseu', addressCountry: 'PT' },
+  sameAs: links.filter((l) => l.url.startsWith('https://')).map((l) => l.url),
+};
 ---
 
 <!doctype html>
@@ -26,13 +49,45 @@ const alternates = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{t.title}</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={t.metaDescription} />
-    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {
+      noindex ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <>
+          <link rel="canonical" href={canonical} />
+          {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+        </>
+      )
+    }
+
+    <!-- Prévia ao compartilhar (WhatsApp, LinkedIn, Facebook, X) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Elcio Júnior" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={t.metaDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={t.ogLocale} />
+    <meta property="og:locale:alternate" content={useTranslations(otherLocale(locale)).ogLocale} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={t.metaDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={t.ogImageAlt} />
+
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(person)} />}
+
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <!-- Aplica o tema antes da pintura para não piscar -->
     <script is:inline>
       try {

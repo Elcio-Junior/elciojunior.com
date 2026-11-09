@@ -3,6 +3,12 @@ export interface UIStrings {
   htmlLang: string;
   title: string;
   metaDescription: string;
+  /** Formato do Open Graph, ex.: pt_BR */
+  ogLocale: string;
+  ogImageAlt: string;
+  /** Cargo usado no JSON-LD (Person.jobTitle) */
+  jobTitle: string;
+  notFound: { title: string; heading: string; text: string; back: string };
   avatarAlt: string;
   nav: { stack: string; experience: string; contact: string };
   langSwitch: { label: string; aria: string };
