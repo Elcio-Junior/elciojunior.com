@@ -1,0 +1,57 @@
+---
+import { homePath, otherLocale, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const otherHref = homePath(otherLocale(locale));
+---
+
+<header class="site-header">
+  <a class="brand" href="#top"><span class="diamond"></span>Elcio Júnior</a>
+  <nav class="nav" id="nav">
+    <a href="#stack">{t.nav.stack}</a>
+    <a href="#experience">{t.nav.experience}</a>
+    <a href="#contact">{t.nav.contact}</a>
+  </nav>
+  <div class="tools">
+    <!-- Fase 2: vira um <a href> sem JS -->
+    <button id="langBtn" class="icon-btn" type="button" aria-label={t.langSwitch.aria} data-href={otherHref}>
+      {t.langSwitch.label}
+    </button>
+    <button id="themeBtn" class="icon-btn" type="button" aria-label={t.themeToggleAria}>◐</button>
+  </div>
+</header>
+
+<script>
+  const root = document.documentElement;
+
+  document.getElementById('langBtn')?.addEventListener('click', (e) => {
+    const href = (e.currentTarget as HTMLElement).dataset.href;
+    if (href) location.href = href;
+  });
+
+  document.getElementById('themeBtn')?.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('theme', next);
+    } catch {}
+  });
+
+  // Destaca no menu a seção visível
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav a');
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+      });
+    },
+    { rootMargin: '-40% 0px -55% 0px' },
+  );
+  document.querySelectorAll('main section[id]').forEach((s) => spy.observe(s));
+</script>

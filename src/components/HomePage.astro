@@ -1,0 +1,50 @@
+---
+// Página inicial completa; as rotas de cada idioma só escolhem o locale.
+import Base from '../layouts/Base.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Section from './Section.astro';
+import StackGrid from './StackGrid.astro';
+import Timeline from './Timeline.astro';
+import { education } from '../data/education';
+import { experience } from '../data/experience';
+import { projects } from '../data/projects';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<Base locale={locale}>
+  <Header locale={locale} />
+  <main id="top">
+    <Hero locale={locale} />
+
+    <Section id="stack" title={t.sections.stack}>
+      <StackGrid locale={locale} />
+    </Section>
+
+    <Section id="experience" title={t.sections.experience}>
+      <Timeline id="expList" items={experience[locale]} />
+    </Section>
+
+    <Section id="projects" title={t.sections.projects}>
+      <Timeline id="projList" items={projects[locale]} layout="grid" />
+    </Section>
+
+    <Section id="education" title={t.sections.education}>
+      <Timeline id="eduList" items={education[locale]} layout="grid" />
+    </Section>
+
+    <Section id="contact" title={t.sections.contact}>
+      <Contact locale={locale} />
+    </Section>
+  </main>
+  <Footer />
+</Base>

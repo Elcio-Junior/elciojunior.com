@@ -1,0 +1,42 @@
+---
+// Fontes hospedadas no próprio site (sem Google Fonts): Fraunces com eixos opsz + wght
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '../styles/global.css';
+import CodeBackground from '../components/CodeBackground.astro';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.title}</title>
+    <meta name="description" content={t.metaDescription} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Aplica o tema antes da pintura para não piscar -->
+    <script is:inline>
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div class="rays" aria-hidden="true"></div>
+    <CodeBackground />
+    <slot />
+  </body>
+</html>

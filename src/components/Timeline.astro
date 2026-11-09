@@ -1,0 +1,25 @@
+---
+import type { TimelineItem } from '../data/types';
+
+interface Props {
+  id: string;
+  items: TimelineItem[];
+  /** "list": coluna única (experiência); "grid": cards lado a lado (projetos, formação). */
+  layout?: 'list' | 'grid';
+}
+
+const { id, items, layout = 'list' } = Astro.props;
+const className = layout === 'grid' ? 'grid wide' : 'timeline';
+---
+
+<div class={className} id={id}>
+  {
+    items.map((item) => (
+      <article class="card item">
+        <div class="meta">{item.meta}</div>
+        <h3>{item.title}</h3>
+        <p>{item.text}</p>
+      </article>
+    ))
+  }
+</div>

@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+import profile from '../assets/img/profile.png';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow"><span class="diamond"></span><span>{t.hero.eyebrow}</span></p>
+    <h1>{t.hero.name}</h1>
+    <p class="role">{t.hero.role}</p>
+    <div class="lead prose" id="heroSummary">
+      {t.hero.summary.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+    <p class="loc">{t.hero.location}</p>
+    <div class="cta">
+      <a class="btn primary" href="#contact">{t.hero.ctaContact}</a>
+      <a class="btn" href="#experience">{t.hero.ctaExperience}</a>
+    </div>
+  </div>
+  <figure class="arch">
+    <div class="arch-inner">
+      <Image
+        id="avatar"
+        src={profile}
+        alt={t.avatarAlt}
+        width={400}
+        height={500}
+        widths={[300, 400, 600, 760]}
+        sizes="(max-width: 760px) min(75vw, 300px), 380px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+  </figure>
+</section>
