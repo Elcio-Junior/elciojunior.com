@@ -16,7 +16,7 @@ const className = layout === 'grid' ? 'grid wide' : 'timeline';
   {
     items.map((item) => (
       <article class="card item">
-        <div class="meta">{item.meta}</div>
+        {item.meta && <div class="meta">{item.meta}</div>}
         <h3>{item.title}</h3>
         <p>{item.text}</p>
       </article>

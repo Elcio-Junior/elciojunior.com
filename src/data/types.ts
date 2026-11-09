@@ -1,7 +1,8 @@
 import type { Localized } from '../i18n/locales';
 
 export interface TimelineItem {
-  meta: string;
+  /** Linha pequena acima do título (data, categoria). Opcional: a experiência não mostra datas. */
+  meta?: string;
   title: string;
   text: string;
 }
