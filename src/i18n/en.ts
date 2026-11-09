@@ -2,7 +2,7 @@ import type { UIStrings } from './types';
 
 export const en: UIStrings = {
   htmlLang: 'en',
-  title: 'Elcio Júnior',
+  title: 'Elcio Júnior · Full-Stack Software Engineer',
   metaDescription: 'Elcio Júnior, full-stack software engineer working with .NET, Angular and applied AI.',
   avatarAlt: 'Illustration of Elcio Júnior',
   nav: { stack: 'Stack', experience: 'Experience', contact: 'Contact' },

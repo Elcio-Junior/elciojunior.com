@@ -2,7 +2,7 @@ import type { UIStrings } from './types';
 
 export const ptBr: UIStrings = {
   htmlLang: 'pt-BR',
-  title: 'Elcio Júnior',
+  title: 'Elcio Júnior · Engenheiro de Software Full-Stack',
   metaDescription: 'Elcio Júnior, engenheiro de software full-stack com .NET, Angular e IA aplicada.',
   avatarAlt: 'Ilustração de Elcio Júnior',
   nav: { stack: 'Stack', experience: 'Experiência', contact: 'Contato' },
