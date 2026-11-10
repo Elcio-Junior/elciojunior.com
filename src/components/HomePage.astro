@@ -1,6 +1,7 @@
 ---
 // Página inicial completa; as rotas de cada idioma só escolhem o locale.
 import Base from '../layouts/Base.astro';
+import BackToTop from './BackToTop.astro';
 import Contact from './Contact.astro';
 import Footer from './Footer.astro';
 import Header from './Header.astro';
@@ -53,4 +54,5 @@ const t = useTranslations(locale);
     </Section>
   </main>
   <Footer />
+  <BackToTop locale={locale} />
 </Base>

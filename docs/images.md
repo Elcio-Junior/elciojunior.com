@@ -27,6 +27,7 @@ Os prompts individuais (`scripts/prompts/<id>.txt`) descrevem **só o conteúdo*
 | `poster-education` | 3:4 | Seção Formação |
 | `poster-contact` | 3:4 | Seção Contato |
 | `og` | 16:9 | Fundo do `public/og.jpg` (prévia no WhatsApp/LinkedIn) |
+| `back-to-top` | 1:1 | Ícone do botão flutuante "voltar ao topo" (`BackToTop.astro`), mostrado a 48–56px: formas grandes e simples |
 
 O hero não tem pôster: ele já mostra o retrato ilustrado.
 

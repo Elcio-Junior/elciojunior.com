@@ -1,0 +1,31 @@
+---
+// Botão flutuante que leva ao topo. O ícone foi gerado com o Gemini (ver docs/images.md, id "back-to-top")
+// e fica dentro de um mini-arco dourado, no mesmo desenho dos atalhos sociais.
+// É um link nativo para #top: funciona sem JS e a subida suave vem do scroll-behavior do global.css.
+import { Image } from 'astro:assets';
+import icon from '../assets/img/gen/back-to-top.webp';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<a class="to-top" href="#top" aria-label={t.backToTop} title={t.backToTop}>
+  <Image src={icon} alt="" width={56} height={56} densities={[1, 2, 3]} loading="lazy" />
+</a>
+<noscript><style>.to-top { opacity: 1; visibility: visible; transform: none; }</style></noscript>
+
+<script>
+  // Mostra o botão só depois que o hero sai da tela
+  const button = document.querySelector<HTMLElement>('.to-top');
+  const hero = document.querySelector('.hero');
+  if (button && hero) {
+    new IntersectionObserver(([entry]) => button.classList.toggle('is-visible', !entry.isIntersecting)).observe(hero);
+  } else {
+    button?.classList.add('is-visible');
+  }
+</script>
