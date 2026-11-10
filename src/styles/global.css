@@ -172,6 +172,28 @@ h1 { font: 800 clamp(40px, 7vw, 76px)/1.05 var(--serif); letter-spacing: -.02em;
 .contact p { margin-bottom: 18px; }
 .links { display: flex; flex-wrap: wrap; gap: 12px; }
 
+/* Botão flutuante "voltar ao topo" (BackToTop.astro): ícone do Gemini dentro de um mini-arco dourado */
+.to-top {
+  position: fixed; z-index: 20; display: block; width: 56px; height: 60px; overflow: hidden;
+  right: max(20px, env(safe-area-inset-right, 0px)); bottom: max(20px, env(safe-area-inset-bottom, 0px));
+  border: 1.5px solid var(--gold); border-radius: 999px 999px 12px 12px; background: #0b1320;
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--gold-soft), var(--shadow);
+  opacity: 0; visibility: hidden; transform: translateY(12px);
+  transition: opacity .3s, transform .3s, visibility .3s, box-shadow .2s;
+}
+.to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.to-top.is-visible:hover, .to-top.is-visible:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--gold), 0 10px 28px rgba(184, 138, 44, .35);
+}
+.to-top img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 760px) {
+  .to-top { width: 48px; height: 52px; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .to-top, .to-top.is-visible, .to-top.is-visible:hover, .to-top.is-visible:focus-visible { transition: none; transform: none; }
+}
+
 .site-footer { text-align: center; color: var(--muted); font-size: 14px; padding: 40px 16px 56px; }
 
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }

@@ -24,6 +24,7 @@ export const ptBr: UIStrings = {
   nav: { stack: 'Stack', experience: 'Experiência', contact: 'Contato' },
   langSwitch: { label: 'EN', aria: 'Ver em inglês' },
   themeToggleAria: 'Alternar tema claro/escuro',
+  backToTop: 'Voltar ao topo',
   socials: { aria: 'Redes e contato', newTab: '(abre em nova aba)' },
   hero: {
     eyebrow: 'Olá, eu sou',
